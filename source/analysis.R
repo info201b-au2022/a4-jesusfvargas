@@ -28,7 +28,7 @@ test_query2 <- function(num=6) {
 # Growth of the U.S. Prison Population
 # Your functions might go here ... <todo:  update comment>
 #----------------------------------------------------------------------------#
-# This function ... <todo:  update comment>
+# This function gets average yearly US prison population for blacks and whites
 get_year_jail_pop <- function(df) {
   # TODO: Implement this function 
   d1 <- df %>% group_by(year) %>% 
@@ -37,7 +37,7 @@ get_year_jail_pop <- function(df) {
   return(d1)   
 }
 
-# This function ... <todo:  update comment>
+# This function plots average annual Black population in the US prisons
 plot_jail_pop_for_us <- function(df)  {
   # TODO: Implement this function 
   p1 <- get_year_jail_pop(df)  %>% 
@@ -54,6 +54,7 @@ plot_jail_pop_for_us <- function(df)  {
 # See Canvas
 #----------------------------------------------------------------------------#
 
+# This function computes yearly averages of US population in prisons by for whites and blacks per state 
 get_year_jail_pop_by_state <- function(df) {
   # TODO: Implement this function 
   d1 <- df %>% group_by(year, state) %>% 
@@ -62,10 +63,10 @@ get_year_jail_pop_by_state <- function(df) {
   return(d1)   
 }
 
-# This function ... <todo:  update comment>
+# This function plots yearly averages of US population in prisons by for blacks per state 
 plot_jail_pop_for_us_by_state <- function(df)  {
   # TODO: Implement this function 
-  p1 <- get_year_jail_pop(df) %>% 
+  p1 <- get_year_jail_pop_by_state(df) %>% 
     ggplot(aes(x = year, y = Black)) +
     geom_line() + facet_wrap(~state, scales = "free_y") +
     labs(x = "Year", y = "Average Black population")
@@ -79,6 +80,16 @@ plot_jail_pop_for_us_by_state <- function(df)  {
 # See Canvas
 #----------------------------------------------------------------------------#
 
+# This function plots average annual Black and white prison population in the US
+plot_jail_inequality_for_us <- function(df)  {
+  # TODO: Implement this function 
+  p1 <- get_year_jail_pop(df)  %>% 
+    reshape2::melt(id = c("year")) %>% 
+    ggplot(aes(x = year, y = value, color = variable)) +
+    geom_line() + labs(x = "Year", y = "Average population", color = "Race")
+  return(p1)   
+} 
+
 
 
 ## Section 6  ---- 
@@ -88,6 +99,16 @@ plot_jail_pop_for_us_by_state <- function(df)  {
 # See Canvas
 #----------------------------------------------------------------------------#
 
-## Load data frame ---- 
+# This function plots average annual Black and white prison population in the US by state
+plot_jail_inequality_for_us_by_state <- function(df)  {
+  # TODO: Implement this function 
+  p1 <- get_year_jail_pop_by_state(df)  %>% 
+    reshape2::melt(id = c("year", "state")) %>% 
+    ggplot(aes(x = year, y = value, color = variable)) +
+    geom_line() + facet_wrap(~state, scales = "free_y") +
+    labs(x = "Year", y = "Average population", color = "Race")
+  return(p1)   
+} 
+
 
 

@@ -1,5 +1,5 @@
-----
-title: "Prison Inequality Evaluations"
+---
+title: "Prison Evaluation Rate"
 author: "Jesus Vargas"
 date: '2022-11-01'
 output: 
@@ -36,25 +36,26 @@ df <- read_excel("incarceration_trends.xlsx")
 ```
 
 ## Abstract 
-[TODO: Include a short abstract (about 50 words)]
+[According to studies on imprisonment rates in the United States, the rate of incarceration in federal, state, municipal, and juvenile correctional facilities has increased. Persons born abroad, blacks, members of other nonwhite racial groups, and other non-English-speaking people have made up a sizable proportion of those jailed in recent years. Through visualization, this study showed declines in over representation of other ethnic groups in US prisons and jails.]
 
 
 ## Introduction 
-[TODO]
+The functions for carrying out the analysis are coded in the analysis.R file and are loaded into the R environment as shown below. The functions will be called to answer the questions as required.
+
+```{r}
+source("analysis.R")
+```
+
 
 ## Data Summary 
+The dataset used in research was obtained from <https://github.com/vera-institute/incarceration-trends>. The data was downloaded and imported into R as shown above. The dataset consists of 153811 observations with 121 variables. Specifically, the study will focus on the `year`, `state`, `black_prison_pop` and `white_prison_pop` variables.
 
 
 ## Growth of the US Prison Population
-The figure below represents average population of Blacks in prisons. It is observed that there has been a steady increase in the numbers.
+The figure below represents average population of Blacks in prisons. It is observed that there has been a steady increase in the numbers over the years.
 
-```{r}
-df %>% group_by(year) %>% 
-  summarise(Black = mean(black_prison_pop, na.rm = T),
-            White = mean(white_prison_pop, na.rm = T)) %>% 
-  ggplot(aes(x = year, y = Black)) +
-  geom_line() + 
-  labs(x = "Year", y = "Average Black population")
+```{r, fig.cap="Annual average black population in US prisons"}
+plot_jail_pop_for_us(df)
 ```
 
 
@@ -62,46 +63,29 @@ df %>% group_by(year) %>%
 
 The figure below represents how average black population in prisons has developed in states. Some states are observed to have no prisoners whereas most of the states have prisoners. Generally, the population in prisons is observed to be increasing in most states whith some notable exceptions like NY, and IN.
 
-```{r}
 
-df %>% group_by(year, state) %>% 
-  summarise(Black = mean(black_prison_pop, na.rm = T),
-            White = mean(white_prison_pop, na.rm = T)) %>% 
-  ggplot(aes(x = year, y = Black)) +
-  geom_line() + facet_wrap(~state, scales = "free_y") +
-  labs(x = "Year", y = "Average Black population")
+```{r, fig.cap="Annual average black population in US prisons by state", fig.width=12, fig.height=10}
+plot_jail_pop_for_us_by_state(df)
 ```
 
 
 ## Potential patterns of inequality
 
-To determine potential patterns of inequality, average population in prisons for white and Black individuals are compared in the figure below. 
+To determine potential patterns of inequality, average population in prisons for white and Black individuals are compared in the figure below. It can be observed that generally, population in prisons increases for both races. However, there are more blacks than whites in US prisons.
 
-```{r}
 
-df %>% group_by(year) %>% 
-  summarise(Black = mean(black_prison_pop, na.rm = T),
-            White = mean(white_prison_pop, na.rm = T)) %>% 
-  reshape2::melt(id = c("year")) %>% 
-  ggplot(aes(x = year, y = value, color = variable)) +
-  geom_line() + labs(x = "Year", y = "Average population")
+```{r, fig.cap="Annual average population in US prisons", fig.width=8, fig.height=6}
+plot_jail_inequality_for_us(df)
 ```
 
 
 ## Geographical patterns of inequality
+Finally, geographical patterns of inequality are observed by plotting annual prison populations for whites and blacks by state where the figure is presented below. Black population is higher than white population in; AL, CA, FL, GA, IL, LA, MD, MI, MN, MO, MS, NC, NJ, NV, NY, PA, SC, TN, TX, VA, and WI. On the other hand, Black population is lower than white population in; AZ, CO, HI, IA, KY, MA, ME, ND, NE, NH, OK, OR, RI, SD, UT, WA, WV, and WY.
 
 
-```{r}
-
-df %>% group_by(year, state) %>% 
-  summarise(Black = mean(black_prison_pop, na.rm = T),
-            White = mean(white_prison_pop, na.rm = T)) %>% 
-  reshape2::melt(id = c("year", "state")) %>% 
-  ggplot(aes(x = year, y = value, color = variable)) +
-  geom_line() + facet_wrap(~state, scales = "free_y") +
-  labs(x = "Year", y = "Average population")
+```{r, fig.cap="Annual average black population in US prisons by state", fig.width=12, fig.height=12}
+plot_jail_inequality_for_us_by_state(df)
 ```
-
 
 
 
