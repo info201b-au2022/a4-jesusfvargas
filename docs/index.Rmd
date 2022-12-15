@@ -1,5 +1,5 @@
 ---
-title: "Prison Evaluation Rate"
+title: "Prison Inequality Evaluation"
 author: "Jesus Vargas"
 date: '2022-11-01'
 output: 
